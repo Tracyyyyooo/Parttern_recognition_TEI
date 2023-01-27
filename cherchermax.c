@@ -2,7 +2,7 @@
 #include "pngwrap.h"
 #include <stdlib.h>
 
-int cherchermax(float) *data)   //n est la taille du talbeau 
+int cherchermax(float *data)
 {
     int position;
     int n=sizeof(data)/sizeof(data[0]);
@@ -16,4 +16,5 @@ int cherchermax(float) *data)   //n est la taille du talbeau
             else;
         }
         return position;
-    }
+}
+
