@@ -2,19 +2,18 @@
 #include "pngwrap.h"
 #include <stdlib.h>
 
-int cherchermax(float *data,int n)   //n est la taille du talbeau 
+int cherchermax(float) *data)   //n est la taille du talbeau 
 {
-    float max=data[0];
-    for (int i = 0;i<image->heigh;i++)
+    int position;
+    int n=sizeof(data)/sizeof(data[0]);
+    float max=data[1];
+    for (int i = 0;i<n;i++)
     {
-        for (int j=0;j<image->width;j++)
-        {
-            if(data[i][j]>max){
-                max=data[i][j];
-                position[0] = i;
-                position[1] = j;
+            if(data[i]>max){
+                max=data[i];
+                position = i;
             }
             else;
         }
+        return position;
     }
-}
