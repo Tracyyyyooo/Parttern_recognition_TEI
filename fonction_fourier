@@ -1,0 +1,14 @@
+void fourier(image_c imagecomplexe  imc,  int isign)
+{
+unsigned long nn[2]={imc->height,imc->width};
+fourn( (float*)imc->rawdata, nn,  2, isign);
+
+//on normalise les valeurs entre 0 et 255
+float max=imc->rawdata[cherchermax(*imc->rawdata)];
+float min=imc->rawdata[cherchermin(*imc->rawdata)];
+float a=255/(max-min);
+float b=-a*min;
+for (int i=0;i<imc->height*imc->width;i++)
+{
+    imc->rawdata[i]=a*imc->rawdata[i]+b;
+}
