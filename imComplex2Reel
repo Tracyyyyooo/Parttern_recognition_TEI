@@ -3,21 +3,18 @@ bwimage_t  imComplex2Reel(image_c *imc)
     bwimage_t  *im = malloc(sizeof(bwimage_t));
     im->width = imc->width;
     im->height = imc->height;
-    im->rawdata=malloc(im->width*im->height*sizeof(unsigned char));
+    im->rawdata=malloc(im->width*im->height*sizeof(unsigned long));
     for (int i=0; i<imc->width*imc->height;i++){
-        imc->rawdata[i]=complex2reel((float)imc->rawdata[i]);
+        im->rawdata[i]=complex2reel((float)im->rawdata[i]);
     }
     //on normalise les valeurs entre 0 et 255
-    float max=imc->rawdata[cherchermax(*imc->rawdata)];
-    float min=imc->rawdata[cherchermin(*imc->rawdata)];
+    float max=im->rawdata[cherchermax(*im->rawdata)];
+    float min=im->rawdata[cherchermin(*im->rawdata)];
     float a=255/(max-min);
     float b=-a*min;
-    for (int i=0;i<imc->height*imc->width;i++)
+    for (int i=0;i<im->height*im->width;i++)
     {
-        imc->rawdata[i]=a*imc->rawdata[i]+b;
-    }
-    for (int i=0;i<im->height*im->width;i++){
-        im->rawdata[i]=imc->rawdata[i];
+        im->rawdata[i]=a*im->rawdata[i]+b;
     }
     return im;
 }
