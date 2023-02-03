@@ -13,19 +13,3 @@ for (int i=0;i<imc->height*imc->width;i++)
     imc->rawdata[i]=a*imc->rawdata[i]+b;
 }
 
-
-int cherchermin(float *data)
-{
-    int position;
-    int n=sizeof(data)/sizeof(data[0]);
-    float min=data[0];
-    for (int i = 0;i<n;i++)
-    {
-            if(data[i]<min){
-                min=data[i];
-                position = i;
-            }
-            else;
-        }
-        return position;
-}
