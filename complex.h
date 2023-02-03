@@ -30,6 +30,8 @@ float complex2reel(complex z);
 //revoie une image complex a partir de l'image reel
 image_c* imReel2Complex(bwimage_t *image);
 
+//faire la conversion d'une image complex à l'image reel
+bwimage_t  imComplex2Reel(image_c *imc);
 
 
 #endif
