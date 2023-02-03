@@ -20,7 +20,7 @@ int cherchermax(float *data)
 }
 
 
-void fourier(imagecomplexe  imc,  int isign)
+void fourier(image_c imagecomplexe  imc,  int isign)
 {
 unsigned long nn[2]={imc.height,imc.width};
 
