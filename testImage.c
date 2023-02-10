@@ -12,9 +12,10 @@ bwimage_t *init(){
     for(int i=0; i<image->height*image->width; i++)
         image->rawdata[i] = i<=8? 1 : 0;
     image->data=0;
-    
     return image;
 }
+
+
 
 //affiche images pour les test
 void affiche_im_c(image_c* imC){
@@ -44,40 +45,57 @@ void affiche_data(bwimage_t *im){
     printf("\n");
 }
 
+void create_im(int x, int y, int n){
+    bwimage_t  *image = malloc(sizeof(bwimage_t));
+    //bwimage_t *image = E3ACreateImage();
+    image->height=8;
+    image->width=8;
+    image->rawdata=malloc(image->height*image->width*sizeof(unsigned long));
+    for (int i=0;i<image->height*image->width;i++){
+        image->rawdata[i]=0;
+    }
+    for(int i=0; i<n;i++){
+        for(int j=0;j<n;j++){
+            image->rawdata[(y+i)*image->width + x+j] = 255;
+        }
+    }
+    data(image);
+    affiche_im(image);
+    E3ADumpImage("../PROJET/noa.png", image);
+    E3AFreeImage(image);
+}
 
 
 int main(){
+    create_im(1, 5, 2);
+
     bwimage_t *image = E3ACreateImage();
     bwimage_t *motif = E3ACreateImage();
-    bwimage_t *output = E3ACreateImage();
-    E3ALoadImage("../PROJET/square_8.png", image);
+    E3ALoadImage("../PROJET/noa.png", image);
     E3ALoadImage("../PROJET/motif_8.png", motif);
-    E3ALoadImage("../PROJET/output_8.png", output);
-    bwimage_t *test=init();
 
-
-    image_c *imageC=imReel2Complex(image);
-    image_c *motifC=imReel2Complex(motif);
+    /*
+    image_c *imageC = imReel2Complex(image);
     fourier(imageC, 1);
-    fourier(motifC, 1);
-
-    correlation(imageC, motifC);
-
+    derive(imageC);
     fourier(imageC, -1);
-    fourier(motifC, -1);
-    affiche_im_c(imageC);
-    bwimage_t *retour= imComplex2Reel(imageC);
-    affiche_im(retour);
-    affiche_data(retour);
-    affiche_data(output);
+    bwimage_t *retour = imComplex2Reel(imageC);
+    
 
+    affiche_im(retour);
     E3ADumpImage("../PROJET/retour.png", retour);
+    */
+
+    image_c* imC = imReel2Complex(image);
+    image_c* motifC = imReel2Complex(motif);
+    correlation(imC, motifC);
+    bwimage_t *retour = imComplex2Reel(imC);
+    affiche_im(retour);
 
 
     E3AFreeImage(image);
     E3AFreeImage(motif);
     E3AFreeImage(retour);
-    E3AFreeImage(output);
 
     /*
     image_c* imC = imReel2Complex(image);

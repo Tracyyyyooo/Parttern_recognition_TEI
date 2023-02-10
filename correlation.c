@@ -5,8 +5,8 @@
 
 complex produit(complex x, complex y){
     complex z;
-    z.re = x.re*y.re + x.im*y.im;
-    z.im = x.re*y.im - x.im*y.re;
+    z.re = x.re*y.re - x.im*y.im;
+    z.im = x.re*y.im + x.im*y.re;
     return z;
 }
 
@@ -14,9 +14,9 @@ void conjugue(complex* z){
     z->im= -(z->im);
 }
 
-complex reel2complex(float r){
+complex reel2complex(float a){
     complex z;
-    z.re = r;
+    z.re = a;
     z.im=0;
     return z;
 }
@@ -146,13 +146,33 @@ void fourier(image_c* imc,  int isign){
 }
 
 
-void correlation(image_c *imc1, image_c *imc2){   //on enregistre les valeurs après la convolution dans 'imc1'
+void correlation(image_c *imc1, image_c *imc2){   //on enregistre les valeurs après la correlation dans 'imc1'
+    fourier(imc1, 1);
+    fourier(imc2, 1);
     for (int i=0;i<imc1->height*imc1->width; i++){
         conjugue(&imc2->rawdata[i]);
         imc1->rawdata[i] = produit((complex)imc1->rawdata[i], (complex)imc2->rawdata[i]);
     }
+    fourier(imc1, -1);
 }
 
+
+void derive(image_c *imc){
+    int H=imc->height, W=imc->width, w1, w2;
+    for(int i=0; i<H; i++){
+        for(int j=0; j<W; j++){
+            if(i<H/2) w1=i; else w1=i-H;
+            if(j<W/2) w2=j; else w2=j-W;
+            iwZ((complex)imc->rawdata[i*W+j], w1, w2);
+        }
+    }
+}
+
+complex iwZ (complex z, int w1, int w2){
+    float t=z.re;
+    z.re = -z.im*(w1+w2);
+    z.im = t*(w1+w2);
+}
 
 /*
 //on normalise les valeurs entre 0 et 255

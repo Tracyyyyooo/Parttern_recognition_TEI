@@ -58,7 +58,9 @@ void fourier(image_c* imc,  int isign);
 //produit de correlation avec le conjugue
 void correlation(image_c *imc1, image_c *imc2);
 
-
+//derive dans fourier
+void derive(image_c *imc);
+complex iwZ (complex z, int w1, int w2); // z*i(w1+w2)
 
 
 #ifdef __cplusplus
