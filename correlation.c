@@ -64,15 +64,16 @@ image_c* imReel2Complex(bwimage_t *image){
     return imC;
 }
 
-//imComplex2Reel (normaliser entre 0 et 255)
+//imComplex2Reel (et normalise entre 0 et 255)
 bwimage_t* imComplex2Reel(image_c *imc)
 {
     bwimage_t  *im = malloc(sizeof(bwimage_t));
     im->width = imc->width;
     im->height = imc->height;
     im->rawdata=malloc(im->width*im->height*sizeof(unsigned long));
-    for (int i=0; i<imc->width*imc->height;i++){
-        im->rawdata[i]=complex2reel(imc->rawdata[i]);
+    int j=0, k=0;
+    for (int i=0; i<imc->width*imc->height;i++){;
+        im->rawdata[i]=complex2reel(imc->rawdata[i])/(im->height*im->width);
     }
     //on normalise les valeurs entre 0 et 255
     float max=im->rawdata[cherchermax(*im)];
@@ -82,7 +83,22 @@ bwimage_t* imComplex2Reel(image_c *imc)
     {
         im->rawdata[i]=a*(im->rawdata[i]-min);
     }
+    data(im);
     return im;
+    
+}
+
+void data(bwimage_t *im){
+    im->data=malloc(im->height*sizeof(unsigned long*));
+    for(int i=0; i<im->height; i++)
+        im->data[i]=malloc(im->width*sizeof(unsigned long));
+    int k=0;
+    for(int i=0; i<im->height; i++){
+        for(int j=0; j<im->width; j++){
+            im->data[i][j] = im->rawdata[k];
+            k++;
+        }
+    }
 }
 
 
@@ -129,11 +145,13 @@ void fourier(image_c* imc,  int isign){
     fourn( (float*)imc->rawdata, nn,  2, isign);
 }
 
-/*
-void correlation(image_c imc1, image_c imc2){   //on enregistre les valeurs après la convolution dans 'imc1'
-    for (int i=0;i<imc1->heigh*imc1->width)
-        imc1->rawdata[i] = produit(imc1->rawdata[i], conjugue(imc2->rawdata[i]));
-}*/
+
+void correlation(image_c *imc1, image_c *imc2){   //on enregistre les valeurs après la convolution dans 'imc1'
+    for (int i=0;i<imc1->height*imc1->width; i++){
+        conjugue(&imc2->rawdata[i]);
+        imc1->rawdata[i] = produit((complex)imc1->rawdata[i], (complex)imc2->rawdata[i]);
+    }
+}
 
 
 /*

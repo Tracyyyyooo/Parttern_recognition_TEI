@@ -45,6 +45,7 @@ unsigned int* verif_taille(bwimage_t image);
 //convertit une image reel en complexe et inversement
 image_c* imReel2Complex(bwimage_t *image); // si la taille n'est pas une puissance de 2, l'image est agrandie
 bwimage_t* imComplex2Reel(image_c *imc); // et normalise
+void data(bwimage_t *im); //remplie le data d'une image
 
 
 int cherchermax(bwimage_t im);
@@ -55,7 +56,7 @@ int cherchermin(bwimage_t im);
 void fourier(image_c* imc,  int isign);
 
 //produit de correlation avec le conjugue
-void correlation(image_c imc1, image_c imc2);
+void correlation(image_c *imc1, image_c *imc2);
 
 
 
